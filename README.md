@@ -1,4 +1,4 @@
-This repo contains sample test written in [Playwright-python](https://github.com/microsoft/playwright-python).
+This repo contains sample tests written in [Playwright-python](https://github.com/microsoft/playwright-python).
 
 ## How to Setup Playwright
 
@@ -28,5 +28,5 @@ To debug a specific test case with the inspector:
 ```
 PWDEBUG=1 pytest -s -k test_case_name
 ```
-
+You will be able to execute scripts line-by-line, inspect elements, etc:
 ![img.png](img.png)
