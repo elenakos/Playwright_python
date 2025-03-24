@@ -12,7 +12,7 @@ def test_has_title(page: Page):
     # Expect a title "to contain" a substring.
     expect(page).to_have_title(re.compile(PAGE_TITLE))
 
-def test_get_started_link(page: Page):
+def test_verify_get_started_link(page: Page):
     page.goto(URL)
     # Click the get started link.
     page.get_by_role("link", name=LINK_NAME).click()
