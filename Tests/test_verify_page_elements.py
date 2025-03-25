@@ -16,6 +16,7 @@ LINK_COMMUNITY = "Community"
 HEADING_WELCOME = "Welcome"
 LINK_AMBASSADOR = "Ambassador"
 AMBASSADOR_IMAGE_TEXT = "Are you the next Ambassador?'"
+LINK_DOCS = "Docs"
 
 def test_has_title(page: Page):
     logging.info('Navigate to a page')
@@ -42,5 +43,18 @@ def test_navigate_to_community_page(page: Page):
     image_next_ambassador = page.get_by_role("img", name=AMBASSADOR_IMAGE_TEXT)
     expect(image_next_ambassador).to_be_visible()
 
-
+def test_navigate_to_python_documentation(page: Page):
+    logging.info('Navigate to a page')
+    page.goto(URL)
+    logging.info('Navigate to Docs')
+    page.get_by_role("link", name=LINK_DOCS).click()
+    expect(page.get_by_role("heading", name=HEADING_NAME)).to_be_visible()
+    logging.info('Select Python from a drop-down list')
+    dropdown = page.locator(".dropdown__menu")
+    dropdown.hover()
+    dropdown.click()
+    python_option = page.get_by_text("Python")
+    python_option.click()
+    doc_name = page.get_by_text("Playwright logo Playwright")
+    assert doc_name is not None
 
