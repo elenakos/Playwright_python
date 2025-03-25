@@ -23,6 +23,12 @@ To run all tests in a headed mode, open a terminal and type:
 pytest --headed
 ```
 
+To generate reports, install `pip install pytest-html` and use `--html` option while running scripts: 
+```
+pytest --html=Results/verify.html Tests/test_verify_page_elements.py
+```
+![img_1.png](img_1.png)
+
 ## Debugging with Playwright Inspector 
 To debug a specific test case with the inspector:
 ```
