@@ -1,6 +1,8 @@
 [Playwright](https://playwright.dev/) is a powerful open-source automation tool developed by Microsoft. It's primarily used for end-to-end testing of web applications, and it can be used with many languages. 
 
-This repository provides practical examples using Playwright's [Python](https://github.com/microsoft/playwright-python) implementation.
+This repository includes examples of using Playwright's [Python](https://github.com/microsoft/playwright-python) implementation.
+
+This project incorporates a basic GitHub Actions integration, with detailed configuration provided at the end of this document.
 
 ## How to Setup Playwright
 
@@ -40,4 +42,4 @@ You will be able to execute scripts line-by-line, inspect elements, etc:
 ![img.png](img.png)
 
 ## Integration with GitHub Actions
-This project utilizes GitHub Actions to automatically run all tests with any code updates, with the configuration defined in `.github/workflows/playwright.yml`
+This project uses GitHub Actions to automatically run all tests with any code updates. The configuration defined in `.github/workflows/playwright.yml`
