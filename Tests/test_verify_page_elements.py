@@ -1,63 +1,51 @@
-import re
 from playwright.sync_api import Page, expect
 import logging
+import pytest
+from POM.playwrightPOM import PlaywrightPage
 
-# Configure logging
+# Logging settings
 logging.basicConfig(
     level=logging.DEBUG,  # Set the desired log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 )
 
-# Variables
-URL = "https://playwright.dev/"
-PAGE_TITLE = "Playwright"
-LINK_NAME = "Get started"
-HEADING_NAME = "Installation"
-LINK_COMMUNITY = "Community"
-HEADING_WELCOME = "Welcome"
-LINK_AMBASSADOR = "Ambassador"
-AMBASSADOR_IMAGE_TEXT = "Are you the next Ambassador?'"
-LINK_DOCS = "Docs"
-DOC_MENU_NAME = "Node.js"
-DOC_PYTHON_NAME = "Playwright logo Playwright"
-DOC_PYTHON_OPTION = "Python"
-
-def test_has_title(page: Page):
+def test_page_has_correct_title(page: Page):
+    pagePOM = PlaywrightPage(page)
     logging.info('Navigate to a page')
-    page.goto(URL)
+    pagePOM.navigate_to_page()
     logging.info('Verify the page title')
-    expect(page).to_have_title(re.compile(PAGE_TITLE))
+    page_title = pagePOM.return_page_title()
+    assert pagePOM.PAGE_TITLE in page_title
 
 def test_verify_link_is_displayed(page: Page):
+    pagePOM = PlaywrightPage(page)
     logging.info('Navigate to a page')
-    page.goto(URL)
+    pagePOM.navigate_to_page()
     logging.info('Click on Get Started')
-    page.get_by_role("link", name=LINK_NAME).click()
+    pagePOM.click_on_link(pagePOM.LINK_NAME)
     logging.info('Verify the page heading')
-    expect(page.get_by_role("heading", name=HEADING_NAME)).to_be_visible()
+    assert pagePOM.is_heading_visible(pagePOM.HEADING_NAME) == True
 
 def test_navigate_to_community_page(page: Page):
+    pagePOM = PlaywrightPage(page)
     logging.info('Navigate to a page')
-    page.goto(URL)
+    pagePOM.navigate_to_page()
     logging.info('Navigate to Community')
-    page.get_by_role("link", name=LINK_COMMUNITY).click()
-    expect(page.get_by_role("heading", name=HEADING_WELCOME)).to_be_visible()
+    pagePOM.click_on_link(pagePOM.LINK_COMMUNITY)
+    assert pagePOM.is_heading_visible(pagePOM.HEADING_WELCOME) is not None
     logging.info('Navigate to Ambassadors page')
-    page.get_by_role("link", name=LINK_AMBASSADOR).first.click()
-    image_next_ambassador = page.get_by_role("img", name=AMBASSADOR_IMAGE_TEXT)
-    expect(image_next_ambassador).to_be_visible()
+    pagePOM.click_on_link(pagePOM.LINK_AMBASSADOR)
+    page.screenshot(path="screenshot1.png", full_page=True)
+    assert pagePOM.is_image_visible(pagePOM.AMBASSADOR_IMAGE_TEXT) == True
 
 def test_navigate_to_python_documentation(page: Page):
+    pagePOM = PlaywrightPage(page)
     logging.info('Navigate to a page')
-    page.goto(URL)
+    pagePOM.navigate_to_page()
     logging.info('Navigate to Docs')
-    page.get_by_role("link", name=LINK_DOCS).click()
-    expect(page.get_by_role("heading", name=HEADING_NAME)).to_be_visible()
+    pagePOM.click_on_link(pagePOM.LINK_DOCS)
+    assert pagePOM.is_heading_visible(pagePOM.HEADING_NAME) is not None
     logging.info('Select Python from a drop-down list')
-    dropdown = page.get_by_role("button", name=DOC_MENU_NAME)
-    dropdown.hover(timeout=1000)
-    dropdown.click()
-    python_option = page.get_by_text(DOC_PYTHON_OPTION)
-    python_option.click()
-    doc_name = page.get_by_text(DOC_PYTHON_NAME)
-    assert doc_name is not None
+    pagePOM.select_option_from_dropdown_menu(pagePOM.DOC_PYTHON_OPTION, pagePOM.DOC_MENU_NAME)
+    page.screenshot(path="screenshot2.png", full_page=True)
+    assert pagePOM.is_text_visible(pagePOM.DOC_PYTHON_NAME) is not None
 
