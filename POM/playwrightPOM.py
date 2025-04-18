@@ -25,9 +25,9 @@ class PlaywrightPage:
     def __init__(self, page: Page):
         self.page = page
 
-    def navigate_to_page(self):
+    def navigate_to_page(self, url=URL):
         logging.info('Navigate to a page')
-        self.page.goto(self.URL)
+        self.page.goto(url)
 
     def return_page_title(self):
         return self.page.title()
@@ -49,7 +49,7 @@ class PlaywrightPage:
         return self.page.get_by_text(text).is_visible()
 
     def select_option_from_dropdown_menu(self, option_name, dropdown_menu):
-        logging.info('Select an option from a dropdown menu')
+        logging.info('Selecting an option from a dropdown menu')
         dropdown = self.page.get_by_role("button", name=dropdown_menu)
         dropdown.hover(timeout=1000)
         dropdown.click()
