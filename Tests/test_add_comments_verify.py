@@ -5,11 +5,7 @@ Add any test comment
 Verify that the comment was saved
 '''
 
-import re
-from operator import truediv
-
 from playwright.sync_api import Page, expect
-from playwright.async_api import async_playwright
 
 # Variables
 URL = "http://eng-qa-interview.s3-website-us-east-1.amazonaws.com/"
