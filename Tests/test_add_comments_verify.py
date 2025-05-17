@@ -1,6 +1,6 @@
 '''
 Navigate to http://eng-qa-interview.s3-website-us-east-1.amazonaws.com/
-Scroll dynamically to tge nth item
+Scroll dynamically to the N-th item
 Add any test comment
 Verify that the comment was saved
 '''
