@@ -1,5 +1,5 @@
 '''
-Navigate to TODO page
+Navigate to TODOS page
 Add to a list
 Remove from a list
 Filter
