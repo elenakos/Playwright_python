@@ -40,9 +40,26 @@ def test_todo_item_can_be_deleted(page: Page):
     delete_todo_item(page, todo_item_to_delete)
     assert not verify_todo_item_is_present(page, todo_item_to_delete), "TO-DO item was not deleted"
 
+def test_todo_completed_items_can_be_filtered_by_active(page: Page):
+    print("Verifying that completed items can be filtered")
+    todo_item_to_add = "Item To Mark and Filter"
+    assert navigate_to_todos(page), "The page did not appear"
+    assert verify_text_on_page(page, HEADER_NAME), "TODOS test did nto appear"
+    add_todo_item(page, todo_item_to_add)
+    assert verify_todo_item_is_present(page, todo_item_to_add), "TO-DO item was not added"
+    assert mark_todo_item_as_done(page, todo_item_to_add), "TO-DO item checkbox was not checked"
+    assert filter_todo_active(page), "The Active filter button was not present"
+    assert not verify_todo_item_is_present(page, todo_item_to_add), "TO-DO completed item was present in Active filter"
+
 def test_todo_items_can_be_filtered_by_active(page: Page):
     print("Verifying that items can be filtered")
-
+    todo_item_to_add = "Item To Add and Filter"
+    assert navigate_to_todos(page), "The page did not appear"
+    assert verify_text_on_page(page, HEADER_NAME), "TODOS test did nto appear"
+    add_todo_item(page, todo_item_to_add)
+    assert verify_todo_item_is_present(page, todo_item_to_add), "TO-DO item was not added"
+    assert filter_todo_active(page), "The Active filter button was not present"
+    assert verify_todo_item_is_present(page, todo_item_to_add), "TO-DO item was not present in Active filter"
 
 # Elements - labels/ids
 # -------------------------------
@@ -68,6 +85,9 @@ def return_todo_element_checkbox(page: Page, todo_item):
 
 def return_todo_delete_button(page: Page, todo_item):
     return page.get_by_role("listitem").filter(has_text=todo_item).get_by_label(DELETE_BUTTON)
+
+def return_active_filter_button(page: Page):
+    return page.get_by_text(ACTIVE_FILTER_LINK)
 
 # Methods
 # -------------------------------
@@ -97,7 +117,7 @@ def add_todo_item(page: Page, todo_item):
 def verify_todo_item_is_present(page: Page, todo_item):
     print("Check if a todo item is present")
     element = return_todo_element(page, todo_item)
-    if element:
+    if element.is_visible():
         print("--> TO-DO item found!")
         return True
     else:
@@ -107,7 +127,7 @@ def verify_todo_item_is_present(page: Page, todo_item):
 def mark_todo_item_as_done(page: Page, todo_item):
     print("Mark this item as done: {}".format(todo_item))
     element = return_todo_element_checkbox(page, todo_item)
-    if element:
+    if element.is_visible():
         print("--> TO-DO item checkbox is found!")
         element.click()
         return True
@@ -130,10 +150,23 @@ def delete_todo_item(page: Page, todo_item):
     todo_element = return_todo_element(page, todo_item)
     todo_element.hover()
     element = return_todo_delete_button(page, todo_item)
-    if element:
+    if element.is_visible():
         print("--> TO-DO item delete button is found!")
         element.click()
+        page.wait_for_timeout(2000)
         return True
     else:
         print("--> TO-DO item delete button is not found!")
+        return False
+
+def filter_todo_active(page: Page):
+    print("Filter by Active")
+    filter_button = return_active_filter_button(page)
+    if filter_button.is_visible():
+        print("--> TO-DO filter button is found!")
+        filter_button.click()
+        page.wait_for_timeout(2000)
+        return True
+    else:
+        print("--> TO-DO filter button is not found!")
         return False
