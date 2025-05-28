@@ -41,6 +41,13 @@ def test_todo_item_can_be_marked_as_done(page: Page) :
 
 def test_todo_item_can_be_deleted(page: Page):
     print("Verifying that a todo item can be deleted")
+    todo_item_to_delete = "Item To Delete"
+    assert navigate_to_todos(page), "The page did not appear"
+    assert verify_text_on_page(page, HEADER_NAME), "TODOS test did nto appear"
+    add_todo_item(page, todo_item_to_delete)
+    assert verify_todo_item_is_present(page, todo_item_to_delete), "TO-DO item was not added"
+    delete_todo_item(page, todo_item_to_delete)
+    assert not verify_todo_item_is_present(page, todo_item_to_delete), "TO-DO item was not deleted"
 
 def test_todo_items_can_be_filtered_by_active(page: Page):
     print("Verifying that items can be filtered")
@@ -52,10 +59,13 @@ def return_todo_input(page: Page):
     return page.get_by_placeholder(TODO_INPUT_FIELD_PLACEHOLDER)
 
 def return_todo_element(page: Page, todo_item):
-    return page.get_by_role("listitem").filter(has_text=todo_item)
+    return page.get_by_role("listitem").filter(has_text=todo_item).is_visible(timeout=20)
 
 def return_todo_element_checkbox(page: Page, todo_item):
     return page.get_by_role("listitem").filter(has_text=todo_item).get_by_label(TODO_CHECKBOX)
+
+def return_todo_delete_button(page: Page, todo_item):
+    return page.get_by_role("listitem").filter(has_text=todo_item).get_by_label(DELETE_BUTTON)
 
 # Methods
 # -------------------------------
@@ -111,4 +121,17 @@ def verify_todo_item_is_checked(page: Page, todo_item):
         return True
     else:
         print("--> TO-DO item checkbox is not checked!")
+        return False
+
+def delete_todo_item(page: Page, todo_item):
+    print("Delete this item: {}".format(todo_item))
+    todo_element = return_todo_element(page, todo_item)
+    todo_element.hover()
+    element = return_todo_delete_button(page, todo_item)
+    if element:
+        print("--> TO-DO item delete button is found!")
+        element.click()
+        return True
+    else:
+        print("--> TO-DO item delete button is not found!")
         return False
