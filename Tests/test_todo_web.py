@@ -8,17 +8,8 @@ Filter
 from playwright.sync_api import Page, expect
 
 # Variables
+# -------------------------------
 URL = "https://demo.playwright.dev/todomvc/#/"
-
-# Elements
-HEADER_NAME = "todos"
-TODO_INPUT_FIELD_PLACEHOLDER = "What needs to be done?"
-TODO_CHECKBOX = "Toggle Todo"
-DELETE_BUTTON = "Delete"
-ALL_FILTER_LINK = "All"
-ACTIVE_FILTER_LINK = "Active"
-COMPLETED_FILTER_LINK = "Completed"
-TODO_CELL = "todo-title"
 
 # Test cases
 # -------------------------------
@@ -53,13 +44,24 @@ def test_todo_items_can_be_filtered_by_active(page: Page):
     print("Verifying that items can be filtered")
 
 
-# Elements
+# Elements - labels/ids
+# -------------------------------
+HEADER_NAME = "todos"
+TODO_INPUT_FIELD_PLACEHOLDER = "What needs to be done?"
+TODO_CHECKBOX = "Toggle Todo"
+DELETE_BUTTON = "Delete"
+ALL_FILTER_LINK = "All"
+ACTIVE_FILTER_LINK = "Active"
+COMPLETED_FILTER_LINK = "Completed"
+TODO_CELL = "todo-title"
+
+# Elements - methods
 # -------------------------------
 def return_todo_input(page: Page):
     return page.get_by_placeholder(TODO_INPUT_FIELD_PLACEHOLDER)
 
 def return_todo_element(page: Page, todo_item):
-    return page.get_by_role("listitem").filter(has_text=todo_item).is_visible(timeout=20)
+    return page.get_by_role("listitem").filter(has_text=todo_item)
 
 def return_todo_element_checkbox(page: Page, todo_item):
     return page.get_by_role("listitem").filter(has_text=todo_item).get_by_label(TODO_CHECKBOX)
