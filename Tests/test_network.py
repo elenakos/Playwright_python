@@ -2,18 +2,16 @@
 Open Chrom
 Use .on method for request and response
 Open page
-print url, statuses
+print url, methods, etc
 '''
 import asyncio
-from pydoc import allmethods
-
 from playwright.async_api import async_playwright
 
 # Variables
 # -------------------------------
 URL = "https://google.com"
 
-# Test cases
+# Tests
 # -------------------------------
 
 async def main():
